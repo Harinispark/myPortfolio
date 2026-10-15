@@ -167,7 +167,7 @@ This repo is the **front end only** and deploys to Vercel on its own:
   [`Harinispark/myPortfoliobackend`](https://github.com/Harinispark/myPortfoliobackend)
   on Render, via that repo's `render.yaml`.
 - Set the `/api/(.*)` rewrite in `vercel.json` to your Render service URL, e.g.
-  `https://harini-the-series-api.onrender.com/api/$1`, and leave `VITE_API_BASE`
+  `https://myportfoliobackend-c9pu.onrender.com/api/$1`, and leave `VITE_API_BASE`
   unset so the app calls the API same-origin (cookies just work).
 - One env file only: the backend repo's `.env`. Production secrets live in the
   Render dashboard, never in either repo.

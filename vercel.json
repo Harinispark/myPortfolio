@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://harini-the-series-api.onrender.com/api/$1"
+      "destination": "https://myportfoliobackend-c9pu.onrender.com/api/$1"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
