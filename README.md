@@ -63,9 +63,11 @@ with, endorsed by, or connected to any streaming service.
 ## Content is served by an API
 
 The prose/portfolio content no longer lives only in the bundle. A companion
-backend (`../backend`, Node + Express + Prisma + PostgreSQL) is the **source of
+backend — a **separate repository**,
+[`Harinispark/myPortfoliobackend`](https://github.com/Harinispark/myPortfoliobackend)
+(Node + Express + Prisma + PostgreSQL), deployed to Render — is the **source of
 truth**: the app fetches the whole page from `GET /api/site` and stores the
-active viewer via `GET/PUT/DELETE /api/session` (see `../backend/README.md`).
+active viewer via `GET/PUT/DELETE /api/session` (see that repo's README).
 
 - The bundled `src/data/*` files are still shipped and render immediately as an
   offline / first-paint fallback (`buildLocalContent()`), so the site never
@@ -125,7 +127,7 @@ back to the bundled content and the editor reports **Offline — read-only**.
 | Loaders        | `ldrs` (route-level Suspense loader)               |
 | Fonts          | Self-hosted Bebas Neue + Inter (`/public/fonts`)   |
 | Linting        | oxlint                                             |
-| Backend        | Node + Express 5 + Prisma + PostgreSQL (`../backend`) |
+| Backend        | Node + Express 5 + Prisma + PostgreSQL (separate repo: `myPortfoliobackend`) |
 | Hosting target | Vercel (see `vercel.json`)                         |
 
 ---
@@ -133,11 +135,13 @@ back to the bundled content and the editor reports **Offline — read-only**.
 ## Getting started
 
 The frontend works standalone (it falls back to the bundled content), but to
-use the live database-backed content and the persisted viewer session, start the
-backend first.
+use the live database-backed content and the persisted viewer session, run the
+backend too. Clone
+[`myPortfoliobackend`](https://github.com/Harinispark/myPortfoliobackend) as a
+sibling folder named `backend` (so the commands below line up).
 
 ```bash
-# terminal 1 — the API (see ../backend/README.md for the single .env)
+# terminal 1 — the API (its README documents the single .env)
 cd ../backend
 npm run dev      # http://localhost:4000
 
@@ -152,15 +156,21 @@ npm run lint     # oxlint
 ---
 
 ## Deploying
-- **Front end** → Vercel (project root is this folder; `vercel.json` handles
-  the SPA rewrite, asset caching, and the `/api` proxy).
-- **Back end** → Render, via `../backend/render.yaml` (see `../backend/README.md`
-  → *Deploying*).
+
+This repo is the **front end only** and deploys to Vercel on its own:
+
+- **Vercel** — import this repository, leave **Root Directory** empty (the app
+  is the repo root) and keep the framework preset **Vite**. `vercel.json`
+  already sets the build (`npm run build` → `dist/`), the SPA rewrite, asset
+  caching, and the `/api` proxy.
+- **Back end** — deployed separately from
+  [`Harinispark/myPortfoliobackend`](https://github.com/Harinispark/myPortfoliobackend)
+  on Render, via that repo's `render.yaml`.
 - Set the `/api/(.*)` rewrite in `vercel.json` to your Render service URL, e.g.
   `https://harini-the-series-api.onrender.com/api/$1`, and leave `VITE_API_BASE`
   unset so the app calls the API same-origin (cookies just work).
-- One env file only: `../backend/.env`, documented in `../backend/README.md`.
-  Production secrets live in the Render dashboard, never in the repo.
+- One env file only: the backend repo's `.env`. Production secrets live in the
+  Render dashboard, never in either repo.
 
 ---
 
